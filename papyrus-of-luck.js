@@ -32,6 +32,9 @@ function focus_input_on_window_focus() {
 
 // Add input Event Listeners for fields
 function input_focus() {
+  if (display_box.innerHTML == "Error: Input all numbers") {
+    display_box.innerHTML = "";
+  }
   sleep(3000).then(() => {
     first_empty_input(fields).focus();
   })
@@ -60,16 +63,18 @@ function button_release() {
 
 function calculate() {
   var inputs = [];
-  // Count how many valid inputs there are
+  // If inputs are valid then push to inputs arrays
   for (var i = 0; i < fields.length; i++) {
     if ((!isNaN(fields[i].value) && (fields[i].value != ""))) {
       inputs.push(parseInt(fields[i].value));
     }
   }
+  // If inputs is length 3 then calculate permutations of multipliers
   if (inputs.length == 3) {
     var N = inputs.length;
     var multipliers = [];
-    var number_GE_initial = 0;
+    var number_equal_initial = 0;
+    var number_greater_initial = 0;
     for (var i = 0; i < N; i++) {
       var scalar = inputs[i];
       var sum = 0;
@@ -80,14 +85,35 @@ function calculate() {
       }
       multipliers.push(sum * scalar);
     }
-    console.log(multipliers);
+    // Pop the initial multiplier
     var initial_multiplier = multipliers.pop();
-    if (multipliers.every(function (e) { return initial_multiplier < e })) {
-      display_box.innerHTML = "<p>Shuffle! You got: " + initial_multiplier.toString() + "</p><p>Guaranteed a greater multiplier</p>" + "<p>Other Multipliers: " + multipliers.toString() + "</p>";
+    var multipliers_length = multipliers.length;
+    // Count how many of the permutations are greater and also equal to initial_multiplier
+    for (var i = 0; i < multipliers_length; i++) {
+      if (initial_multiplier < multipliers[i]) {
+        number_greater_initial++;
+      }
+      else if (initial_multiplier == multipliers[i]) {
+        number_equal_initial++;
+      }
+    }
+    // If all other permutations of multipliers are strictly greater than initial then suggest to shuffle
+    if (number_greater_initial == multipliers_length) {
+      display_box.innerHTML = "<p>Shuffle!</p><p>Current Multiplier &#60; New Multipliers</p>" + "You got: " + initial_multiplier.toString() + " versus " + multipliers.join(" & ") + "</p>";
+    }
+    // If one is equal and the other is strictly greater than then also suggest to roll
+    else if ((number_greater_initial == 1) && (number_equal_initial == 1)) {
+      display_box.innerHTML = "<p>Shuffle!</p><p>Current Multiplier &#8804; New Multipliers</p>" + "You got: " + initial_multiplier.toString() + " versus " + multipliers.join(" & ") + "</p>";
+    }
+    else if (number_equal_initial == 2) {
+      display_box.innerHTML = "<p>You can shuffle, nothing will happen.</p><p>Current Multiplier &#61; New Multipliers</p>" + "<p>You got: " + initial_multiplier.toString() + " versus " + multipliers.join(" & ") + "</p>";
+    }
+    else {
+      display_box.innerHTML = "<p>Don't Shuffle!</p><p>Current Multiplier &#8805; New Multipliers</p>" + "<p>You got: " + initial_multiplier.toString() + " versus " + multipliers.join(" & ") + "</p>";
     }
   }
   else {
-    display_box.innerHTML = "Make sure to input all 3 numbers"
+    display_box.innerHTML = "Error: Input all numbers"
   }
 }
 
