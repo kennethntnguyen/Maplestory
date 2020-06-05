@@ -2,7 +2,8 @@ var fields = document.getElementsByTagName("input");
 var calculate_button = document.getElementById("calculate-button");
 var reset_button = document.getElementById("reset-button");
 var buttons = document.getElementsByTagName("button");
-var display_box = document.getElementById("display-box")
+var display_box = document.getElementById("display-box");
+var calculated = false;
 
 fields[0].focus();
 // Add Event Listener for when the window is focused
@@ -35,18 +36,24 @@ function input_focus() {
   if (display_box.innerHTML == "Error: Input all numbers") {
     display_box.innerHTML = "";
   }
-  sleep(3000).then(() => {
-    first_empty_input(fields).focus();
-  })
+  if (calculated == true) {
+    sleep(3000).then(() => {
+      first_empty_input(fields).focus();
+    })
+  }
 }
 
 function button_press() {
   this.style.boxShadow = "2px 2px 2px rgba(0, 0, 0, 0.1)";
   if (this.id == "calculate-button") {
     calculate();
+    input_focus();
   }
   else if (this.id == "reset-button") {
     reset();
+    sleep(50).then(() => {
+      fields[0].focus();
+    })
   }
   else {
     console.log("What? Why was button_press() called if calculate or reset wasn't pressed?")
@@ -62,6 +69,7 @@ function button_release() {
 }
 
 function calculate() {
+  calculated = true;
   var inputs = [];
   // If inputs are valid then push to inputs arrays
   for (var i = 0; i < fields.length; i++) {
@@ -118,6 +126,7 @@ function calculate() {
 }
 
 function reset() {
+  calculate = false;
   for (var i = 0; i < fields.length; i++) {
     fields[i].value = "";
   }
@@ -130,6 +139,7 @@ function reset() {
 function first_empty_input(input_elements) {
   var last_index = input_elements.length - 1
   var focus_index = last_index
+  var filled = 0;
   for (var i = last_index; 0 <= i; i--) {
     if (isNaN(input_elements[i].value) || input_elements[i].value == " ") {
       input_elements[i].value = ""
@@ -137,8 +147,16 @@ function first_empty_input(input_elements) {
     if (input_elements[i].value == "") {
       focus_index = i;
     }
+    else {
+      filled++;
+    }
   }
-  return input_elements[focus_index];
+  if ((calculated == true) && (filled == 3)) {
+    return input_elements[0];
+  }
+  else {
+    return input_elements[focus_index];
+  }
 }
 
 const sleep = (milliseconds) => {
