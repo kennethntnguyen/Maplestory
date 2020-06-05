@@ -126,7 +126,7 @@ function calculate() {
 }
 
 function reset() {
-  calculate = false;
+  calculated = false;
   for (var i = 0; i < fields.length; i++) {
     fields[i].value = "";
   }
