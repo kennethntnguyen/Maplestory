@@ -25,6 +25,7 @@ html {
 .main-frame {
   display: flex;
   flex-direction: column;
+  align-items: center;
   height: 400px;
   width: 400px;
   border-radius: 2px;
@@ -116,4 +117,14 @@ input[type=text] {
   font-size: 24px;
   align-items: center;
   justify-content: center;
+}
+
+@media screen and (max-width: 850px) {
+  .field-container {
+    width: 85%;
+  }
+  input[type=text] {
+    font-size: 30px;
+    color: rgb(0, 0, 0);
+  }
 }

@@ -121,6 +121,7 @@ function calculate() {
     }
   }
   else {
+    buttons["calculate-button"]
     display_box.innerHTML = "<p>Error: Input all numbers</p>"
   }
 }
