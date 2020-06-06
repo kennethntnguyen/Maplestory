@@ -118,13 +118,3 @@ input[type=text] {
   align-items: center;
   justify-content: center;
 }
-
-@media screen and (max-width: 850px) {
-  .field-container {
-    width: 85%;
-  }
-  input[type=text] {
-    font-size: 30px;
-    color: rgb(0, 0, 0);
-  }
-}
