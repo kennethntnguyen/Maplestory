@@ -121,7 +121,7 @@ function calculate() {
     }
   }
   else {
-    display_box.innerHTML = "Error: Input all numbers"
+    display_box.innerHTML = "<p>Error: Input all numbers</p>"
   }
 }
 
