@@ -59,9 +59,6 @@ function button_press() {
   }
   else if (this.id == "reset-button") {
     reset();
-    sleep(50).then(() => {
-      fields[0].focus();
-    })
   }
   else {
     console.log("What? Why was button_press() called if calculate or reset wasn't pressed?")
@@ -140,6 +137,9 @@ function reset() {
     fields[i].value = "";
   }
   display_box.innerHTML = "";
+  sleep(50).then(() => {
+    fields[0].focus();
+  })
 }
 
 //Helper Methods
