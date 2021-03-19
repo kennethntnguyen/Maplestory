@@ -14,6 +14,12 @@ window.addEventListener("keydown", function (event) {
   }
 }, false);
 
+window.addEventListener("keydown", function (event) {
+  if (event.keyCode == 27) {
+    reset();
+  }
+}, false);
+
 // Add Event Listeners for field inputs
 for (var i = 0; i < fields.length; i++) {
   fields[i].addEventListener("input", input_focus, false);
@@ -38,7 +44,9 @@ function input_focus() {
   }
   if (calculated == true) {
     sleep(3000).then(() => {
-      first_empty_input(fields).focus();
+      var empty_input = first_empty_input(fields);
+      empty_input.focus();
+      empty_input.select();
     })
   }
 }
